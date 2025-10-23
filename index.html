@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lembrete para Taiana Amazonas</title>
+    <title>Lembretes NOC</title>
     <style>
         * {
             margin: 0;
@@ -16,9 +16,17 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
+            gap: 20px;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            flex-wrap: wrap;
+        }
+        .cont {
+            display: flex;
+            gap: 20px;
+            flex-direction: row;
+            justify-content: center;
         }
         
         .container {
@@ -109,12 +117,13 @@
     </style>
 </head>
 <body>
+    <div class="cont">
     <div class="container">
         <h1>Taiana Amazonas</h1>
         <p class="subtitle">Lembre-se do seu compromisso</p>
         
         <div class="reminder">
-            Taiana, não esqueça!
+            Renovação CNH
         </div>
         
         <div class="countdown">
@@ -138,26 +147,78 @@
         
         <p class="event-date">Compromisso: 30 de Outubro</p>
     </div>
+    
+    <div class="container">
+        <h1>Caroline Miranda</h1>
+        <p class="subtitle">Lembre-se do seu compromisso</p>
+        
+        <div class="reminder">
+            Consulta oftalmológica
+        </div>
+        
+        <div class="countdown">
+            <div class="time-unit">
+                <div class="time-value" id="caroline_days">00</div>
+                <div class="time-label">Dias</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="caroline_hours">00</div>
+                <div class="time-label">Horas</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="caroline_minutes">00</div>
+                <div class="time-label">Minutos</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="caroline_seconds">00</div>
+                <div class="time-label">Segundos</div>
+            </div>
+        </div>
+        
+        <p class="event-date">Compromisso: 27 de Outubro</p>
+    </div>
+    </div>
 
     <script>
-        // Define a data do compromisso (30 de outubro do ano atual)
+        // Função para criar data com horário específico (meio-dia)
+        function createEventDate(year, month, day) {
+            return new Date(year, month, day, 12, 0, 0);
+        }
+
+        // Define as datas dos compromissos
         const currentYear = new Date().getFullYear();
-        const eventDate = new Date(currentYear, 9, 30); // Mês é 0-indexed (9 = outubro)
+        let eventDate1 = createEventDate(currentYear, 9, 30); // Taiana - 27 de outubro
+        let eventDate2 = createEventDate(currentYear, 9, 28); // Caroline - 27 de outubro
         
-        // Se a data já passou este ano, define para o próximo ano
-        if (new Date() > eventDate) {
-            eventDate.setFullYear(currentYear + 1);
+        // Se as datas já passaram este ano, define para o próximo ano
+        const now = new Date();
+        if (now > eventDate1) {
+            eventDate1 = createEventDate(currentYear + 1, 9, 27);
+        }
+        if (now > eventDate2) {
+            eventDate2 = createEventDate(currentYear + 1, 9, 27);
         }
         
-        function updateCountdown() {
+        // Função para atualizar um contador específico
+        function updateCountdown(date, prefix) {
             const now = new Date();
-            const timeRemaining = eventDate - now;
+            const timeRemaining = date.getTime() - now.getTime();
             
             if (timeRemaining <= 0) {
-                document.getElementById('days').textContent = '00';
-                document.getElementById('hours').textContent = '00';
-                document.getElementById('minutes').textContent = '00';
-                document.getElementById('seconds').textContent = '00';
+                // Para o primeiro contador (sem prefixo)
+                if (prefix === '') {
+                    document.getElementById('days').textContent = '00';
+                    document.getElementById('hours').textContent = '00';
+                    document.getElementById('minutes').textContent = '00';
+                    document.getElementById('seconds').textContent = '00';
+                } 
+                // Para o segundo contador (com prefixo)
+                else if (prefix === 'caroline_') {
+                    document.getElementById('caroline_days').textContent = '00';
+                    document.getElementById('caroline_hours').textContent = '00';
+                    document.getElementById('caroline_minutes').textContent = '00';
+                    document.getElementById('caroline_seconds').textContent = '00';
+                }
                 return;
             }
             
@@ -166,17 +227,33 @@
             const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
             
-            document.getElementById('days').textContent = days.toString().padStart(2, '0');
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            // Para o primeiro contador (sem prefixo)
+            if (prefix === '') {
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            } 
+            // Para o segundo contador (com prefixo)
+            else if (prefix === 'caroline_') {
+                document.getElementById('caroline_days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('caroline_hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('caroline_minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('caroline_seconds').textContent = seconds.toString().padStart(2, '0');
+            }
         }
         
-        // Atualiza o contador a cada segundo
-        setInterval(updateCountdown, 1000);
+        // Função para atualizar ambos os contadores
+        function updateBothCountdowns() {
+            updateCountdown(eventDate1, '');              // Taiana (sem prefixo)
+            updateCountdown(eventDate2, 'caroline_');     // Caroline (com prefixo)
+        }
         
-        // Inicializa o contador
-        updateCountdown();
+        // Atualiza os contadores a cada segundo
+        setInterval(updateBothCountdowns, 1000);
+        
+        // Inicializa os contadores
+        updateBothCountdowns();
     </script>
 </body>
 </html>
