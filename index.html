@@ -177,6 +177,35 @@
         
         <p class="event-date">Compromisso: 31 de Outubro</p>
     </div>
+    <div class="container">
+        <h1>13º salario</h1>
+        <p class="subtitle">💵🦅💵🦅💵</p>
+        
+        <div class="reminder">
+            Primeira parcela 13º salario
+        </div>
+        
+        <div class="countdown">
+            <div class="time-unit">
+                <div class="time-value" id="decimo_days">00</div>
+                <div class="time-label">Dias</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="decimo_hours">00</div>
+                <div class="time-label">Horas</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="decimo_minutes">00</div>
+                <div class="time-label">Minutos</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="decimo_seconds">00</div>
+                <div class="time-label">Segundos</div>
+            </div>
+        </div>
+        
+        <p class="event-date">Dia: 31 de Outubro</p>
+    </div>
     </div>
 
     <script>
@@ -189,6 +218,8 @@
         const currentYear = new Date().getFullYear();
         let eventDate1 = createEventDate(currentYear, 9, 30); // Taiana - 27 de outubro
         let eventDate2 = createEventDate(currentYear, 9, 31); // Caroline - 27 de outubro
+        let eventDate3 = createEventDate(currentYear, 9, 31); // 13º salario - 31 de outubro
+        
         
         // Se as datas já passaram este ano, define para o próximo ano
         const now = new Date();
@@ -197,6 +228,9 @@
         }
         if (now > eventDate2) {
             eventDate2 = createEventDate(currentYear + 1, 9, 27);
+        }
+        if (now > eventDate3) {
+            eventDate3 = createEventDate(currentYear + 1, 9, 31);
         }
         
         // Função para atualizar um contador específico
@@ -218,6 +252,12 @@
                     document.getElementById('caroline_hours').textContent = '00';
                     document.getElementById('caroline_minutes').textContent = '00';
                     document.getElementById('caroline_seconds').textContent = '00';
+                }
+                else if (prefix === 'decimo_') {
+                    document.getElementById('decimo_days').textContent = '00';
+                    document.getElementById('decimo_hours').textContent = '00';
+                    document.getElementById('decimo_minutes').textContent = '00';
+                    document.getElementById('decimo_seconds').textContent = '00';
                 }
                 return;
             }
@@ -241,12 +281,19 @@
                 document.getElementById('caroline_minutes').textContent = minutes.toString().padStart(2, '0');
                 document.getElementById('caroline_seconds').textContent = seconds.toString().padStart(2, '0');
             }
+            else if (prefix === 'decimo_') {
+                document.getElementById('decimo_days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('decimo_hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('decimo_minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('decimo_seconds').textContent = seconds.toString().padStart(2, '0');
+            }
         }
         
         // Função para atualizar ambos os contadores
         function updateBothCountdowns() {
             updateCountdown(eventDate1, '');              // Taiana (sem prefixo)
             updateCountdown(eventDate2, 'caroline_');     // Caroline (com prefixo)
+            updateCountdown(eventDate3, 'decimo_');        // 13º salario (com prefixo)
         }
         
         // Atualiza os contadores a cada segundo
